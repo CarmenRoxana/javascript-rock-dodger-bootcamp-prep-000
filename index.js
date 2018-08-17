@@ -71,12 +71,13 @@ function createRock(x) {
    * Now that we have a rock, we'll need to append
    * it to GAME and move it downwards.
    */
-    document.querySelector('#game').appendChild(rock);
+    GAME.appendChild(rock);
   /**
    * This function moves the rock. (2 pixels at a time
    * seems like a good pace.)
    */
   function moveRock() {
+    rock.style.top = `${top += 2}px`;
     // implement me!
     // (use the comments below to guide you!)
     /**
@@ -90,9 +91,9 @@ function createRock(x) {
      * Otherwise, if the rock hasn't reached the bottom of
      * the GAME, we want to move it again.
      */
-      else if (positionToInteger(rock.style.bottom)!==0) {
-        moveRock();
-      }
+      if (top < GAME_HEIGHT) {
+      window.requestAnimationFrame(moveRock)
+    }
     /**
      * But if the rock *has* reached the bottom of the GAME,
      * we should remove the rock from the DOM
@@ -137,6 +138,12 @@ function moveDodger(e) {
    * we've declared for you above.)
    * And be sure to use the functions declared below!
    */
+   
+   if ([LEFT_ARROW, RIGHT_ARROW].indexOf(e.which) > -1) {
+    e.preventDefault()
+    e.stopPropagation()
+  } 
+  
    if(e.which===LEFT_ARROW) {
      e.preventDefault();
      e.stopPropagation();
@@ -149,30 +156,25 @@ function moveDodger(e) {
 }
 
 function moveDodgerLeft() {
-  // implement me!
-  /**
-   * This function should move DODGER to the left
-   * (mabye 4 pixels?). Use window.requestAnimationFrame()!
-   */
-   const left = positionToInteger(DODGER.style.left);
-   if(left>0){
-   DODGER.style.left=`${left-4}px`;
-   window.requestAnimationFrame(moveDodgerLeft);
-   }
+  window.requestAnimationFrame(function() {
+    const left = positionToInteger(DODGER.style.left)
+
+    if (left > 0) {
+      DODGER.style.left = `${left - 4}px`
+    }
+  })
 }
 
 function moveDodgerRight() {
-  // implement me!
-  /**
-   * This function should move DODGER to the right
-   * (mabye 4 pixels?). Use window.requestAnimationFrame()!
-   */
-   const left = positionToInteger(DODGER.style.left);
-   if(left<360){
-   DODGER.style.left=`${left+4}px`;
-   window.requestAnimationFrame(moveDodgerRight);
-   }
+  window.requestAnimationFrame(function() {
+    const left = positionToInteger(DODGER.style.left)
+
+    if (left < 360) {
+      DODGER.style.left = `${left + 4}px`
+    }
+  })
 }
+
 
 /**
  * @param {string} p The position property
